@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+
+        }
+        main{
+            height: 100vh;
+            background-image:-webkit-linear-gradient(pink,skyblue);
+        }
+
+        #nav-bar {
+            background-color: #00796b;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            padding: 0 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2)
+        }
+        #nav-ul {
+            list-style: none;
+            display: flex;
+            position: absolute;
+            right: 50px;
+        }
+        .nav-option {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 20px;
+            background-color: #004d40;
+            cursor: pointer;
+            text-decoration: none;
+            color: #ffffff;
+            margin-right: 15px;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        main h1 {
+            text-align: center;
+            font-size: 70px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+        }
+
+        #signin-form {
+            align-self: center;
+            position: relative;
+            padding: 8px;
+            top: 100px;
+            left: 37%;
+            font-size: 25px;
+            height: 0;
+            width: 400px;
+            border: 1px solid rgb(34, 28, 28);
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(62, 56, 56, 0.5);
+            color: rgb(251, 253, 255);
+            visibility: hidden;
+            border-radius: 8px;
+        }
+
+        #signin-form h2,
+        #signup-form h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #ffffff;
+            font-size: 28px;
+        }
+
+        #signin-form input,
+        #signup-form input {
+            padding: 10px;
+            margin: 10px;
+            border: 1px solid black;
+            border-radius: 5px;
+            height: 30px;
+            font-size: 25px;
+            background-color: rgb(222, 248, 248);
+        }
+
+        #login-btn,
+        #signup-btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 20px;
+            color: white;
+            background-color: #00796b;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        #signup-form {
+
+            position: relative;
+            top: 20px;
+            left: 500px;
+            font-size: 25px;
+            height: 0;
+            border: 0;
+            padding: 8px;
+            width: 500px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(62, 56, 56, 0.5);
+            color: rgb(252, 255, 255);
+            visibility: hidden;
+            border-radius: 8px;
+        }
+
+
+        #login-btn:hover,
+        #signup-btn:hover {
+            background-color: #004d40;
+            transform: translateY(-3px);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            background-color: #00796b;
+            color: #e0f7fa;
+            font-size: 16px;
+            box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav id="nav-bar">
+
+            <ul id="nav-ul">
+                <li class="nav-option" id="sign-in-btn">SignIn</a></li>
+                <li class="nav-option" id="sign-up-btn">SignUp</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div>
+            <h1>ToDo list</h1>
+            <div id="signin-form">
+                <h2>Login page</h2>
+                <label for="email">Email</label><input type="email" id="email" placeholder="Enter your email id" />
+                <label for="password">Password</label><input type="password" id="password"
+                    placeholder="Enter your password" />
+                <button id="login-btn">Login</button>
+            </div>
+            <form id="signup-form">
+                <h2>Sign up page</h2>
+                <label for="name">Name</label><input type="text" id="name" placeholder="Enter your Name" required />
+                <label for="class">Class</label><input type="text" id="class" placeholder="Enter your Class" required />
+                <label for="suemail">Email</label><input type="email" id="suemail" placeholder="Enter your email id"
+                    required />
+                <label for="supassword">Password</label><input type="password" id="supassword"
+                    placeholder="Enter your password" required />
+                <button id="signup-btn" type="submit">Signup</button>
+
+            </form>
+        </div>
+    </main>
+    <footer>&copy; Ridum Aggarwal 2024</footer>
+    <script>const signInBtn = document.getElementById("sign-in-btn");
+        const signUpBtn = document.getElementById("sign-up-btn");
+        const signInForm = document.getElementById("signin-form");
+        const signUpForm = document.getElementById("signup-form");
+        function signIn() {
+            signInForm.style.height = "auto";
+            signInForm.style.visibility = "visible";
+            signUpForm.style.height = "0";
+            signUpForm.style.visibility = "hidden";
+        }
+        function signUp() {
+            signUpForm.style.height = "auto";
+            signUpForm.style.visibility = "visible";
+            signInForm.style.height = "0";
+            signInForm.style.visibility = "hidden";
+        }
+        signInBtn.addEventListener("click", (e) => {
+            signIn();
+        });
+        signUpBtn.addEventListener("click", (e) => {
+            signUp();
+        });
+        const signUpdetails = document.getElementById("signup-btn");
+        const logIndetails = document.getElementById("login-btn");
+        let name1 = document.getElementById("name");
+        let clas = document.getElementById("class");
+        let suemail = document.getElementById("suemail");
+        let supassword = document.getElementById("supassword");
+        let email = document.getElementById("email");
+        let password = document.getElementById("password");
+        let loginDetails = {};
+        let signupDetails = {};
+
+        logIndetails.addEventListener("click", () => {
+            loginDetails.email = email.value;
+            loginDetails.password = password.value;
+            console.log(loginDetails);
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/login', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(loginDetails));
+            xhr.onload = () => {
+                if (xhr.status === 200) {
+                    let response=JSON.parse(xhr.responseText);
+                    if (response.status === "Login successful") {
+                        console.log(response);
+                        localStorage.setItem("email",response.email);
+                        localStorage.setItem("username",response.username);
+                        console.log("Login successful");
+                        window.location.href = "http://localhost:8000/todo";
+
+
+                    } else if (response.status === "Invalid email or password") {
+                        console.log("Invalid email or password");
+                        alert("Invalid email or password");
+                    }
+
+                } else {
+                    alert("Error occured at server side");
+                    console.log("Error occured at Server Side");
+                }
+            }
+        });
+        function validateEmail(email) {
+            const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+            return re.test(String(email).toLowerCase());
+        }
+        signUpdetails.addEventListener("click", () => {
+            if (name1.value.trim() && clas.value.trim() && suemail.value.trim() && supassword.value.trim()) {
+                if (validateEmail(suemail.value)) {
+                    signupDetails.name = name1.value;
+                    signupDetails.class = clas.value;
+                    signupDetails.email = suemail.value;
+                    signupDetails.password = supassword.value;
+                    name1.value = "";
+                    clas.value = "";
+                    suemail.value = "";
+                    supassword.value = "";
+                    signIn();
+                    console.log(signupDetails);
+                    let xhrsu = new XMLHttpRequest();
+                    xhrsu.open('POST', '/submit', true);
+                    xhrsu.setRequestHeader('Content-Type', 'application/json');
+                    xhrsu.send(JSON.stringify(signupDetails));
+                    xhrsu.onload = () => {
+                        if (xhrsu.status === 200) {
+                            if (xhrsu.responseText === "success")
+                                alert(xhrsu.responseText);
+                        } else {
+                            alert("Server error Please try again later")
+                        }
+                    }
+                } else {
+                    alert("Invalid Email");
+                }
+            } else {
+                alert("Please fill all the fields");
+            }
+        });
+    </script>
+</body>
+
+</html>

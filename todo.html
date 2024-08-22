@@ -1,0 +1,312 @@
+  <!DOCTYPE html>
+  <html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-Do App</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #00796b;
+        padding: 0;
+      }
+      header{
+        background-color: red;
+        height:auto;
+      }
+      #user {
+        padding:10px;
+        display:flex  ;
+        position: absolute;
+        right: 20px;
+        font-size: 25px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: white;
+        background-image: -webkit-linear-gradient(black,grey);
+        border-radius: 30px;
+      }
+      #logo{
+        height: 30px;
+        width: 30px;
+      }
+      #logout{
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+        font-size: 25px;
+        font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        color: white;
+        background-image: -webkit-linear-gradient(black,grey);
+        border-radius: 30px;
+      }
+      #logout:hover{
+        background-image: -webkit-linear-gradient(rgb(53, 206, 220),rgb(244, 105, 207));
+        cursor: pointer;
+      }
+
+      .container {
+        
+        margin: 0px;
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-image: linear-gradient(rgb(53, 206, 220),rgb(244, 105, 207));
+      }
+
+      #textarea {
+        font-size: 1.5rem;
+        margin-top: 70px;
+        margin-left: 20px;
+        padding: 20px;
+        height: 5vh;
+        width: 50%;
+        border: none;
+        border-radius: 10px;
+        resize: none;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        background-color: #e0f7fa;
+      }
+
+      #task-list {
+        background-color: #00796ba8;
+        margin: 20px;
+        padding: 0;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        width:50%;
+        height: 95%;
+        overflow-y: scroll;
+
+      }
+      #task-list h1{
+        text-align: center;
+        background-image: linear-gradient(to right, rgb(247, 212, 159),rgb(166, 254, 246));
+        position: relative;
+        top:0;
+        margin: 0;
+        border-radius: 10px;
+        color: #69478b;
+        font-family: 'Times New Roman', Times, serif;
+      }
+      #task-list p{
+        margin:10px;
+        color:white;
+        font-size: 20px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+
+      .task {
+        display: flex;
+        justify-content: space-between;
+        border-radius: 20px;
+        margin-top: 5px;
+        margin-right: 10px;
+        margin-left: 10px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-bottom: 1px solid #ccc;
+        background-image: linear-gradient(to right,rgb(134, 216, 223),rgb(238, 143, 213));
+        text-align: center;
+        font-family: cursive;
+        font-size: 1.5rem;
+      }
+      .task:hover{
+        background-image: linear-gradient(to right,rgb(53, 206, 220),rgb(244, 105, 207));
+        cursor: pointer;
+      }
+
+      .task:last-child {
+        border-bottom: none;
+      }
+
+      .checkbox {
+        margin-right: 10px;
+        margin-left: 10px;
+      }
+
+      button {
+        background-color: #4CAF50;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        font-size: 16px;
+        cursor: pointer;
+        border-radius: 10px;
+      }
+
+      button:hover {
+        background-color: #3e8e41;
+      }
+
+      hr {
+        margin: 10px 0;
+        border: none;
+        border-top: 1px solid #ccc;
+      }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+  </head>
+
+  <body>
+    <header> <div id="user"><img src="http://localhost:8000/logo" alt="User" id="logo">
+    <div id="username"> </div></div>
+    </header>
+    <button id="logout">Logout</button>
+    <div class="container">
+      <div id="task-list">
+        <h1>TASK LIST</h1>
+        <p>Add tasks to your list by typing to the right and pressing enter. You may then view pending tasks below.</p>
+
+        <ul id="task-list-ul" class="task-list">
+        </ul>
+
+      </div>
+      <textarea class="textarea" id="textarea" placeholder="I need to.." maxlength="40"></textarea>
+    </div>
+    <script>
+      const logout = document.getElementById('logout');
+      const usname = document.getElementById('username');
+      const user = localStorage.getItem('username');
+      username.innerHTML = user;
+      const taskListUl = document.getElementById('task-list-ul');
+      const textarea = document.getElementById('textarea');
+      let tasks = [];
+      let id=0;
+      let allusers=[];
+      function postreq(item){
+        let obj={"email": localStorage.getItem('email'),
+        "tasks": item};
+        let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/tasks', true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.send(JSON.stringify(obj));
+            xhr.onload = () => {
+              if (xhr.status === 200) {
+                console.log("POST request completed");
+              }
+            }
+      }
+      textarea.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+          const task = textarea.value.trim();
+          id += 1;
+          if (task) {
+            e.preventDefault();
+            tasks.push({ id, task, completed: false });
+            let taskElement = document.createElement('li');
+            //let taskhr = document.createElement('hr');
+            taskElement.className = 'task';
+            taskElement.innerHTML = `<div>${task}</div><div><button class="edit">Edit</button><input type="checkbox" class="checkbox"/><button class="remove-task">x</button></div>`;
+            //taskhr.id = 'hr';
+            taskElement.dataset.id = id;
+            taskListUl.appendChild(taskElement);
+            //taskListUl.appendChild(taskhr);
+            textarea.value = "";
+            //localStorage.setItem('tasks', JSON.stringify(tasks));
+
+            postreq(tasks);
+          }
+        }
+      });
+      let xhr2 = new XMLHttpRequest();
+      xhr2.open('GET', '/tasks', true);
+      xhr2.send();
+      xhr2.onload = () => {
+        if (xhr2.status === 200) {
+          if (xhr2.responseText) {
+            allusers = JSON.parse(xhr2.responseText);
+              let user=[];
+              user = allusers.filter((user) => user.email === localStorage.getItem('email'));
+              tasks = user[0].tasks;
+            id = tasks.length - 1;
+            tasks.forEach((task) => {
+              let taskElement = document.createElement('li');
+              //let taskhr = document.createElement('hr');
+              taskElement.className = 'task';
+              taskElement.innerHTML = `<div>${task.task}</div><div><button class="edit">Edit</button><input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/><button class="remove-task">x</button></div>`;
+              //taskhr.id = 'hr';
+              taskElement.dataset.id = task.id;
+              taskListUl.appendChild(taskElement);
+              //taskListUl.appendChild(taskhr);
+              if (task.completed) {
+                taskElement.style.textDecoration = 'line-through';
+              }
+            })
+          }
+        }
+      };
+
+      /* if (localStorage.getItem('tasks')) {
+        tasks = JSON.parse(localStorage.getItem('tasks'));
+        id = tasks.length - 1;
+        tasks.forEach((task) => {
+          let taskElement = document.createElement('li');
+          let taskhr = document.createElement('hr');
+          taskElement.className = 'task';
+          taskElement.innerHTML = `<div>${task.task}</div><div><button class="edit">Edit</button><input type="checkbox" class="checkbox" ${task.completed ? 'checked' : ''}/><button class="remove-task">x</button></div>`;
+          taskhr.id = 'hr';
+          taskElement.dataset.id = task.id;
+          taskListUl.appendChild(taskElement);
+          taskListUl.appendChild(taskhr);
+          if (task.completed) {
+            taskElement.style.textDecoration = 'line-through';
+          }
+        });
+      } */
+      taskListUl.addEventListener('click', (e) => {
+        if (e.target.classList.contains('checkbox')) {
+          const taskElement = e.target.parentNode.parentNode;
+          const taskId = parseInt(taskElement.dataset.id);
+          const taskIndex = tasks.findIndex((task) => task.id === taskId);
+          if (e.target.checked) {
+            taskElement.style.textDecoration = 'line-through';
+            tasks[taskIndex].completed = true;
+          } else {
+            taskElement.style.textDecoration = 'none';
+            tasks[taskIndex].completed = false;
+          }
+          postreq(tasks);
+          //localStorage.setItem('tasks', JSON.stringify(tasks));
+        } else if (e.target.classList.contains('remove-task')) {
+          const taskElement = e.target.parentNode.parentNode;
+          //const taskhr = taskElement.nextElementSibling;
+          const taskId = parseInt(taskElement.dataset.id);
+          const taskIndex = tasks.findIndex((task) => task.id === taskId);
+          tasks.splice(taskIndex, 1);
+          taskListUl.removeChild(taskElement);
+          //taskListUl.removeChild(taskhr);
+          postreq(tasks);
+          //localStorage.setItem('tasks', JSON.stringify(tasks));
+        } else if (e.target.classList.contains('edit')) {
+          const taskElement = e.target.parentNode.parentNode;
+          const taskId = parseInt(taskElement.dataset.id);
+          let newtask = prompt('Edit task:', taskElement.children[0].innerText);
+          if (newtask) {
+            taskElement.children[0].innerText = newtask;
+            const taskIndex = tasks.findIndex((task) => task.id === taskId);
+            tasks[taskIndex].task = newtask;
+            console.log(tasks);
+            postreq(tasks);
+            //localStorage.setItem('tasks', JSON.stringify(tasks));
+          }
+        }
+      });
+      logout.addEventListener('click', () => {
+        localStorage.removeItem('email');
+        localStorage.removeItem('username');
+        window.location.href = '/';
+      });
+      
+    </script>
+  </body>
+
+  </html>
